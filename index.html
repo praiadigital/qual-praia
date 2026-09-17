@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Qual Praia? — descubra sua cidade ideal no litoral</title>
+<meta name="description" content="Quiz interativo que revela qual cidade do litoral paulista combina com seu perfil. Satélite da rede praia.digital">
+<style>
+body{margin:0;font-family:system-ui,sans-serif;background:linear-gradient(160deg,#ffedd5,#fde68a);color:#7c2d12;min-height:100vh;display:flex;flex-direction:column}
+header{padding:24px;text-align:center}
+nav a{color:#ea580c;margin:0 8px;text-decoration:none;font-size:14px;font-weight:600}
+.wrap{max-width:560px;margin:auto;padding:0 20px 30px;flex:1;width:100%}
+.card{background:#fff;border-radius:20px;padding:28px;box-shadow:0 15px 40px rgba(194,65,12,.18);text-align:center}
+.opt{display:block;width:100%;background:#fff7ed;border:2px solid #fed7aa;border-radius:14px;padding:15px;margin:10px 0;font-size:16px;cursor:pointer;text-align:left;transition:.2s}
+.opt:hover{border-color:#ea580c;transform:scale(1.02)}
+.prog{height:8px;background:#fed7aa;border-radius:99px;margin-bottom:20px;overflow:hidden}
+.prog div{height:100%;background:#ea580c;transition:width .3s}
+.res b{font-size:30px;color:#ea580c}
+footer{padding:16px;text-align:center;font-size:13px}
+footer a{color:#ea580c}
+</style></head>
+<body>
+<header><h1>🏝️ Qual Praia?</h1><p>5 perguntas, 1 cidade perfeita para você</p>
+<nav><a href="https://praia.digital">Praia Digital</a><a href="https://praia.digital/mapa-inteligente">Mapa</a><a href="https://praia.digital/match-praia">Match Praia</a><a href="https://praia.digital/apps">Todos os apps</a></nav></header>
+<div class="wrap"><div class="card" id="card"></div></div>
+<footer>Rede <a href="https://praia.digital">praia.digital</a> · <a href="https://praia.digital/score-bairro">Score de Bairro</a> · <a href="https://praia.digital/radar-precos">Radar de Preços</a></footer>
+<script>
+const perguntas=[
+['O que não pode faltar no seu fim de semana?',[['Surf e natureza 🏄','ubatuba'],['Vida urbana e restaurantes 🍽️','santos'],['Piscina e condomínio fechado 🏡','riviera'],['Curtir sem gastar muito 💸','praiagrande']]],
+['Seu orçamento de compra é...',[['Até R$ 300 mil','praiagrande'],['R$ 300–700 mil','guaruja'],['R$ 700 mil–1,5 mi','santos'],['Acima de R$ 1,5 mi','riviera']]],
+['Você prefere praias...',[['Desertas e selvagens 🌿','ubatuba'],['Movimentadas e com quiosques 🍹','guaruja'],['Urbanas com calçadão 🚴','santos'],['Tanto faz, quero investimento 📈','praiagrande']]],
+['Seu objetivo principal é...',[['Morar com qualidade de vida','santos'],['Investir em temporada 💰','guaruja'],['Casa de fim de semana','riviera'],['Refúgio na natureza','ubatuba']]],
+['Distância de São Paulo ideal:',[['A menos de 1h30','praiagrande'],['Até 2h','santos'],['Até 3h','guaruja'],['Quanto mais longe, melhor 🚗','riviera']]]];
+const cidades={
+ubatuba:{n:'Ubatuba',e:'🌿',d:'100+ praias, Mata Atlântica e o paraíso do surf. Itamambuca e Felix esperam por você.',preco:'R$ 8.200/m²'},
+santos:{n:'Santos',e:'🌆',d:'A melhor infraestrutura do litoral: orla famosa, cultura e mercado imobiliário líquido.',preco:'R$ 11.800/m²'},
+riviera:{n:'São Sebastião (Riviera)',e:'🌅',d:'Condomínios premium, náutica e a maior valorização do litoral paulista.',preco:'R$ 15.200/m²'},
+guaruja:{n:'Guarujá',e:'🏖️',d:'O clássico pé na areia: Pitangueiras, Enseada e temporada forte o ano inteiro.',preco:'R$ 9.800/m²'},
+praiagrande:{n:'Praia Grande',e:'💰',d:'O melhor custo de entrada: alto giro, preços acessíveis e demanda gigante de temporada.',preco:'R$ 7.000/m²'}};
+let i=0,pts={};
+function render(){
+if(i>=perguntas.length){const win=Object.entries(pts).sort((a,b)=>b[1]-a[1])[0][0];const c=cidades[win];
+card.innerHTML=`<div class="res"><p style="font-size:60px">${c.e}</p>Sua praia é...<br><b>${c.n}</b><p>${c.d}</p><p>💵 Preço médio: ${c.preco}</p><p><a href="https://praia.digital/mapa-inteligente" style="color:#ea580c">Explorar no Mapa →</a> · <a href="https://praia.digital/match-praia" style="color:#ea580c">Ver imóveis no Match →</a></p><button class="opt" style="text-align:center" onclick="i=0;pts={};render()">↺ Refazer quiz</button></div>`;return;}
+card.innerHTML=`<div class="prog"><div style="width:${i/perguntas.length*100}%"></div></div><h2>${perguntas[i][0]}</h2>`+perguntas[i][1].map(o=>`<button class="opt" onclick="pick('${o[1]}')">${o[0]}</button>`).join('');}
+function pick(c){pts[c]=(pts[c]||0)+1;i++;render();}
+render();
+</script></body></html>
